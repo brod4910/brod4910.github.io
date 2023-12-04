@@ -7,7 +7,7 @@ first_name: Brian
 middle_name: 
 last_name: Rodriguez
 email: brod4910@gmail.com
-description: > # the ">" symbol means to ignore newlines until "footer_text:"
+description: >  # the ">" symbol means to ignore newlines until "footer_text:"
   An engineer who loves his dog, optimization, and climbing.
 footer_text: >
 keywords: jekyll, jekyll-theme, academic-website, portfolio-website  # add your own keywords or leave empty

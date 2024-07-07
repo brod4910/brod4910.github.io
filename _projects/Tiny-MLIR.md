@@ -23,5 +23,3 @@ This project is still under active and heavy development. I try to work on this 
 <p class="text-center">
 {% include elements/button.html link="https://github.com/brod4910/tiny-mlir" text="tiny-mlir github" %}
 </p>
-
-[tiny-mlir github:](https://github.com/brod4910/tiny-mlir)

@@ -3,7 +3,6 @@ name: Tiny MLIR
 tools: [C++, Python, MLIR, LLVM]
 image: https://i.imgur.com/ZACALBL.png
 description: Something special and tiny. A project 
-external_url: https://github.com/brod4910/tiny-mlir
 ---
 
 # Tiny MLIR
@@ -20,3 +19,9 @@ Another motivation is hopefully through this project, I can create an extensive 
 # Development
 
 This project is still under active and heavy development. I try to work on this project everyday at the time of writing this (July 6 2024). That can change in the future but I'm pretty driven by getting this project working and running. Potentially even achieving some of the same performance metrics as the original tinygrad repo.
+
+<p class="text-center">
+{% include elements/button.html link="https://github.com/brod4910/tiny-mlir" text="tiny-mlir github" %}
+</p>
+
+[tiny-mlir github:](https://github.com/brod4910/tiny-mlir)

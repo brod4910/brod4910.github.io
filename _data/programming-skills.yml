@@ -1,11 +1,15 @@
-- name: HTML5/CSS3
-  percentage: 90
+- name: Coffee
+  percentage: 1000
   color: danger
 
-- name: Go
-  percentage: 80
-  color:
-
 - name: Python
+  percentage: 100
+  color: green
+
+- name: C++
+  percentage: 80
+  color: blue
+
+- name: CUDA
   percentage: 70
-  color: secondary
+  color: yellow

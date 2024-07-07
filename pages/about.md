@@ -10,8 +10,8 @@ weight: 3
 Hi I am **{{ site.author.name }}** :wave:,<br>
 A Machine Learning Engineer driven by none other than my two cats and dog.
 
-{% include elements/figure.html image="https://i.imgur.com/qPyWq7Cs.jpg" caption="Pepper, my curious, snaggle-toothed boy." %}
-{% include elements/figure.html image="https://i.imgur.com/RAfag30s.jpg" caption="DK (Dumpster Kitty), my girl with attitude." %}
+{% include elements/figure.html image="https://i.imgur.com/qPyWq7Cm.jpg" caption="Pepper, my curious, snaggle-toothed boy." %}
+{% include elements/figure.html image="https://i.imgur.com/RAfag30m.jpg" caption="DK (Dumpster Kitty), my girl with attitude." %}
 
 I'm a generally outgoing and silly person but when it comes down to it, I'm ready to tackle almost any challenage except training another dog.
 

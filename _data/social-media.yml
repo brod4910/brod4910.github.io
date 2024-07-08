@@ -2,12 +2,12 @@
 # Get Colors from : https://brandcolors.net/
 
 email:
-  url   : "mailto:brod4910@gmail.com"
+  url   : "mailto:"
   icon  : fas fa-envelope
   color : db4437
 
 github:
-  url   : https://www.github.com/brod4910
+  url   : https://www.github.com/
   icon  : fab fa-github
   color : 333333
 
@@ -15,8 +15,3 @@ linkedin:
   url   : https://www.linkedin.com/in/
   icon  : fab fa-linkedin-in
   color : 007bb5
-
-spotify:
-  url   : https://open.spotify.com/user/
-  icon  : fab fa-spotify
-  color : 1db954

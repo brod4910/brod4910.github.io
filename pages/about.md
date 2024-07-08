@@ -24,12 +24,14 @@ I'm a generally outgoing and silly person but when it comes down to it, I'm read
 </div>
 
 
-{% include elements/figure.html image="https://i.imgur.com/glcIOf8.gif" caption="Luna... a mind of her own and the will power to break any human. I love her. Enjoy this footage of her obidience in this gif... She really is a great dog, and training her has been the hardest thing I've done to date." %}
+{% include elements/figure.html image="https://i.imgur.com/glcIOf8.gif" caption="Luna... a mind of her own and the will power to break any human. I love her. Enjoy this footage of her being really obidient... She really is a great dog, and training her has been the hardest thing I've done to date." %}
 
 
 
 <div class="row">
-{% include about/skills.html title="Programming Skills" source=site.data.programming-skills %}
+{% include about/skills.html title="Programming Languages" source=site.data.programming-languages %}
+{% include about/skills.html title="Engineering Skills" source=site.data.eng-skills %}
+{% include about/skills.html title="Spoken Languages" source=site.data.languages %}
 {% include about/skills.html title="Other Skills" source=site.data.other-skills %}
 </div>
 

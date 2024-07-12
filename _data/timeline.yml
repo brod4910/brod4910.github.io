@@ -1,19 +1,30 @@
 - title: Student, University of Utah ECE
   from: 2013
   to: 2019
-  description: Cohort of 2019, I graduded with my BS in Electrical and Computer Engineering.
+  description: I graduded in 2019 with my BS in Computer Engineering, emphasizing in both hardware and software. I was recognized as a campus-wide diversity scholar, achieved Dean's List Honors, and conducted machine-learning research 
+  under two different research labs. I published two papers under Dr. Rajesh Menon where I collected data and conducted experiments using various deep learning algorithms. Publications can be found under the Projects and Publications tab.
                
 - title: Machine Learning Engineer, Banjo Inc., Park City, UT, US
   from: 2019
   to: 2020
-  description: some description
+  description:
+    • Navigated complex stakeholder goals to create a real-time cloud-based computer vision pipeline that detected vehicle-type and color in low resolution cameras to aid local law enforcement with missing children cases
+    • Collaboratively assessed effectiveness of detection software with engineers, project managers, law enforcement, and department of transportation
+    • Designed and deployed novel algorithms that detected stopped vehicles, crashes, debris, and fires to notify law enforcement and increase positive incident acquisition
+    • Implemented real-time two-stage segmentation algorithms that decreased false positive detections and increased true positive incident acquisition
 
 - title: Machine Learning Engineer, MiiM Inc., South Jordan, UT, US
   from: 2020
   to: 2023
-  description: some description
+  description:
+    • Project lead for a diverse team of engineers and project managers to create an edge computing platform that transforms 3D spaces into a top-down 2D projection to track meaningful movement patterns of pedestrians
+    • Engineered a high-accuracy people detection system optimized to run within a strict 66 millisecond window, leveraging state-of-the-art object detection algorithms and advanced hardware acceleration techniques
+    • Developed a real-time image processing library for deploying machine learning models on camera-enabled edge computing devices, ensuring efficient GPU kernel performance using standardized throughput metrics
 
 - title: Machine Learning Engineer, Smart Vision Works Inc., Orem, UT, US
   from: 2023
   to: Present
-  description: some description
+  description: 
+    • Spearhead the design, implementation, and deployment of modular machine learning infrastructure, optimizing neural network performance on diverse vision domains
+    • Proactively engaged as a client-facing engineer, adapting models and data to align with each client’s unique business goals
+    • Increase efficiency for new client inquires by devising and implementing an unsupervised labeling algorithm that reduces labeling time by 1.75x and provides future-sight for new projects

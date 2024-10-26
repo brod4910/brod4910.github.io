@@ -9,7 +9,7 @@ description: Building foundational knowledge of data swizzling.
 {% capture list_items %}
 Swizzling from the ground up
 Swizzling and how to reason about it
-List
+Applying Swizzling
 {% endcapture %}
 {% include elements/list.html title="Table of Contents" type="toc" %}
 
@@ -54,7 +54,7 @@ By XOR'ing row and column numbers, we determine how elements move according to t
 
 In this case, swizzling causes an out-of-bounds memory access, indicated by -1. For instance, XOR'ing 1 and 2 gives:
 ```
-C3 = 1 ^ 2 = 01 ^ 10 = 11 = 3 -> out-of-
+C3 = 1 ^ 2 = 01 ^ 10 = 11 = 3 -> out-of-bounds
 ```
 
 One way to prevent such issues is ensuring matrix columns are powers of 2 or divisible by 4. This constraint relates to XOR behavior. Let’s examine a 4x6 matrix for clarity.
@@ -98,23 +98,22 @@ This naive approach ignores GPU-specific memory constraints.
 #### Quick Refresher on Bank Conflicts:
 Bank conflicts occur when multiple GPU threads access data stored in the same memory bank. GPU memory banks hold 32-bit values, and on real devices, shared memory is divided into 32 banks. If two threads try to access the same bank address (different values in the same bank), the operation gets serialized, reducing throughput. If threads access the same address in a bank, the value is broadcast to all requesting threads, supporting up to 16 “multi-cast” requests in a single transaction.
 
-The 8x8 matrix visualization below illustrates access patterns. 
+A few things to keep in mind when looking at the visualization:
 
-1. Each cell's value indicates the accessing thread number
-2. The colors follow the same rule and are a way to visualize what thread accesses what value after swizzling.
-3. If a column has repeated colors, we have a bank conflict.
-
-The data matrix reflects the colors from the index matrix to see where the data ends up after swizzling.
+1. Each cell's value in the index matrix indicates what collection of threads in a "cycle" accesses that element
+2. The colors follow the same rule and are a way to visualize what collection of threads accesses what value after swizzling
+3. If a column has repeated colors, we have a bank conflict
+4. The data matrix reflects the colors from the index matrix to see where the data ends up after swizzling.
 
 With that in mind, below is our 8x8 matrix initially before any transformations.
 
-![8x8](../assets/swizzle/8x8.png)
+![8x8](../assets/swizzle/8x8-store.png)
 
-Each row has favorable access patterns when we read since each row reads from a different bank, however, when we write to shared memory, we see that the values and colors in our index matrix are the same reuslting in bank conflicts. If we were to transpose the matrix as is, shown below:
+Each row has favorable access patterns when we read since each row reads from a different. Now, if we wanted to transpose the elements in shared memory, we'd need to read the values in the columns shown below:
 
-![8x8 Transpose](../assets/swizzle/8x8-transpose.png)
+![8x8 Transpose](../assets/swizzle/8x8-load.png)
 
-our writes would result in an 8-way bank conflict so the writes would get serialized into individual transactions and be 1/8th the potential throughput! This is where swizzling comes into play. Let's look at what swizzling does to this matrix. Instead of a gif, I've added a carousel so it is easier to switch between images:
+our column-wise loading would result in an 8-way bank conflict and the loads get serialized into individual transactions and be 1/8th the potential throughput! This is where swizzling comes into play. Let's look at what swizzling does to this matrix when we are loading from shared memory. Instead of a gif, I've added a carousel so it is easier to switch between images (click on the edges of either side to cycle through the images):
 
 {% capture carousel_images %}
 ../assets/swizzle/8x8-steps/step_0.png
@@ -128,5 +127,4 @@ our writes would result in an 8-way bank conflict so the writes would get serial
 {% endcapture %}
 {% include elements/carousel.html %}
 
-As we swizzle row by row, we see that the accesses become favorable when writing to shared memory and accesses stay favorable for reading as well. The issue now is transposing becomes a bit more complex when writing the kernel but not by much as we'll see in a bit.
-
+As we swizzle row by row, we see that the loads become favorable as we swizzle each row; reducing the number of bank-conflicts with each swizzle.

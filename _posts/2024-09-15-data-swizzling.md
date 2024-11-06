@@ -1,6 +1,6 @@
 ---
-title: Mythical CUDA - Data Swizzling
-tags: [CUDA]
+title: WIP! Mythical CUDA - Data Swizzling
+tags: [CUDA, WIP]
 style: fill
 color: secondary
 comments: true
@@ -11,6 +11,7 @@ Swizzling from the ground up
 Swizzling and how to reason about it
 Applying Swizzling
 Implementing Swizzling
+Swizzling For Larger Matricies
 {% endcapture %}
 {% include elements/list.html title="Table of Contents" type="toc" %}
 
@@ -146,17 +147,17 @@ As we swizzle row by row, we see that the loads become favorable as we swizzle e
 Swizzling when storing has no impact on performance since we're still storing to different banks. The time where it matters is when we have to load from shared memory. It is important to make the distinction here since swizzling has impacts on both stores/loads to shared memory.
 
 ## Implementing Swizzling
-All of this conceptual knowledge has lead to this point. Let's write a kernel that implements the concepts we've learned on our toy GPU. We'll skip the initialization of memory, block sizing, etc. and get into just dissecting what a kernel would look like line-by-line (if you'd like to see the auxillary code, it'll be in the github link). One note here is that since our toy GPU has 8 threads, we'll be processing the whole 8x8 matrix with for loops, one per thread.
+All of this conceptual knowledge has lead to this point. Let's write a kernel that implements the concepts we've learned on our toy GPU. We'll skip the initialization of memory, block sizing, etc. and get into just dissecting what a kernel would look like line-by-line (if you'd like to see the auxillary code, it'll be in the github link). One note here is that since our toy GPU has 8 threads, we'll be processing the whole 8x8 matrix with for-loops, one per thread.
 
 The first thing we need to do is create shared memory for our matrix and get our thread index.
 
 ```cuda
 __shared__ uint32 shared_matrix[8][8];  // assuming 32-bit width type since banks hold 32-bits of information. Makes the example easier.
 
-int threadIdx =  ... // Glossing over this since it isn't important for our case. Assume we have this information.
+int threadIdx =  ... // Glossing over this since it isn't important for this use case. Assume we have this information.
 ```
 
-Once we have our rows and columns, we'll need to apply our trusty XOR operator to perform the first set of memory operations.
+Next, we'll need to apply our trusty XOR operator to perform the first set of swizzled memory operations. Again, we're using the thread index as our anchor point to then process a single value in a row per thread.
 
 ```cuda
 // move row-by-row so a single thread processes one value in a row
@@ -173,7 +174,7 @@ The code becomes a bit more complex but hopefully your mind envisioned our visua
 
 ![8x8 Swizzled](../assets/swizzle/8x8-swizzled.png)
 
-Notice how the values we want in the first row are on the diagonal and are in different banks since the number of banks is equal to the number of columns. Accessing the values we require is similar to storing them in that we need to use the swizzled index for each row. We'll need to read our matrix column-wise to ensure we don't get bank-conflicts when reading, then store row-wise to main memory.
+Notice how the values we want in the first row are on the diagonal and are in different banks since the number of banks is equal to the number of columns. Accessing the values we require is similar to storing them in that we need to use the swizzled index for each row. We're reading the matrix column-wise to ensure we don't get bank-conflicts when reading, then store row-wise to main memory to take advantage of memory coalescing.
 
 Below is the kernel to perform this operation.
 
@@ -187,36 +188,66 @@ for (int i = 0; i < 8; ++i) {
 }
 ```
 
-The result of this loop should be a transposed matrix where all of the values in each row are stored in different banks:
+The result of this loop should be a transposed matrix where all of the values in each row are stored row-wise:
 
 ![8x8 Swizzled](../assets/swizzle/8x8-transposed.png)
 
-At this point, we have sucessfully transposed an 8x8 matrix, however, this particular example is quite rudimentary since our matrix size is static and we have assumed it to always be an 8x8 matrix. Let's look at a 16x16 matrix.
+At this point, we have sucessfully transposed an 8x8 matrix, however, this particular example is quite rudimentary since our matrix size is static and we have assumed it to always be an 8x8 matrix. Let's look at applying what we've learned to a larger matrix.
 
 ## Swizzling For Larger Matricies
-In an 8x8 matrix, we were able get away with processing the entire matrix in memory. Let's visualize what our 16x16 matrix:
+In an 8x8 matrix, we were able get away with processing the entire matrix in memory. However, as we scale, we tend to not have that luxury and need to think about processing breaking down larger matricies that don't fit in memory. Below is the 16x16 matrix we'll be processing in this next example:
 
-![8x8 Swizzled](../assets/swizzle/16x16-chunked.png)
+![16x16](../assets/swizzle/16x16-chunked.png)
 
-One thing to keep in mind is that we are still operating under the assumption that we have only 8 threads in our toy GPU. Thus, we will chunk our matrix into 8x8 tiles to make the logic easier in our kernel. We'll be heavily relying on a small detail we glossed over in our initial kernel which was the `threadIdx`. It didn't make a whole lot of sense to dive deeper into this particular line for the 8x8 but let's go ahead and see what is typically involved in this calculation.
+We are still operating under the assumption that we have only 8 threads in our toy GPU. Thus, we will need to chunk our matrix into 8x8 tiles to make the logic easier in our kernel. We'll be heavily relying on a small detail we glossed over in our initial kernel which was the `threadIdx`. It didn't make a whole lot of sense to dive deeper into this particular line for the 8x8 but let's go ahead and see what is typically involved in this calculation. 
 
-Typically, on a GPU device, we calculate a thread index by multiplying the block dimension by block index plus the thread index of the specific block.
+On a GPU device, we calculate a thread index by multiplying the block dimension (`blockDim`) by the block index (`blockIdx`) plus the thread index (`threadIdx`) of the specific block:
 
 ```
 int thread_idx = blockDim.x * blockIdx.x + threadIdx.x;
 ```
 
-In our 16x16 case, we need to tile the matrix into 4 chunks and to make the problem easier, we'll launch our kernel using a grid of 2x2. This allows us to access our matrix easier but each tile will still be using 8 threads for it's computation. A pecuiliar thing to note about this grid is that we're launching a 2x2 block-sized grid with 1x8 sized blocks. This makes the kernel a bit weird in that we aren't directly using the block sizes to calculate the row or columns since we're using a for-loop. We'll modify our original kernel to get the proper starting points in the original matrix.
+A typical GPU has enough capacity to launch a thread per work item. However, that isn't always beneficial for reasons beyond the scope of this discussion. For the example of our toy GPU, we'll need to launch enough blocks that fit within our constraint of 8 threads per block which happens to be 4 blocks in our case (the assumption is that we're still using our for-looped kernel from before). To make our lives easier, we'll also assume that we can launch our blocks in any combination of (x, y) such that the combination still is equal to our desired block size. For the case of our 4 blocks, we can launch it in any order of (1, 4), (4, 1) or (2, 2). We'll choose the logical configuration of (2, 2) since we will be processing 8x8 tiles of our 16x16 matrix. This means that we'll be processing (2, 2) blocks of size (1, 8) where each (1, 8) block is processing an 8x8 tile.
 
+We are still swizzling to take advantage of conflict-free loads/stores so let's take a look at what memory will look like as we process tile-by-tile:
+
+![16x16 Swizzled](../assets/swizzle/matrix-xor-16x16-chunked.gif)
+
+Notice now that as we have increased the dimensions of the matrix, we have also changed the destination calculations depending on the tile we are processing. If we take a look at the finished transpose matrix below, we will see that elements from tile (0, 1) should be place in tile (1, 0) and elements from tile (1, 0) should be placed in tile (0, 1). Meanwhile, the other tiles stay as is since `(0, 0) -> (0, 0)` and `(1, 1) -> (1, 1)`.
+
+The new ordering of our matrix should be:
+```
+(0, 0) -> (0, 0)
+(0, 1) -> (1, 0)
+(1, 0) -> (0, 1) 
+(1, 1) -> (1, 1)
+```
+
+The result of this new ordering is shown:
+![16x16 Swizzled](../assets/swizzle/16x16-transposed.png)
+
+Below is the code which should be basically the same as our 8x8 matrix but the calculations for the linear indices are different. We now have to take into account what tile we are processing.
 
 ```cuda
-// move row-by-row so a single thread processes one value in a row
 for (int i = 0; i < 8; ++i) { 
-     int linear_index = (i + (blockDim.y * blockIdx.y)) * 8 + (threadIdx + (blockDim.x * blockIdx.x));  // If we had a dynamic sized array, we'd replace 8 with the dimension of the column.
+    int linear_index = (i + (blockDim.x * blockIdx.x)) * 16 + (threadIdx + (blockDim.y * blockIdx.y));  // uses block information
 
-     int swizzle_x = i ^ threadIdx;  // calculate the swizzled index for x
+    int swizzle_x = i ^ threadIdx;
 
-     shared_matrix[i][swizzle_x] = matrix[linear_index];  // assigning value in matrix to shared matrix by swizzling
+    shared_matrix[i][swizzle_x] = matrix[linear_index];
 }
 ```
 
+```cuda
+for (int i = 0; i < 8; ++i) { 
+     int linear_index = (i + (blockDim.y * blockIdx.y)) * 16 + (threadIdx + (blockDim.x * blockIdx.x));
+
+     int swizzle_x = i ^ threadIdx;
+
+     out_matrix[linear_index] = shared_matrix[i][swizzle_x];
+}
+```
+(x, y)
+
+tile (0, 1) -> (1, 0):
+linear = (0 + (1 * 0)) * 16 + (i + (1 * 1)) -> (0 * 16 + 1)

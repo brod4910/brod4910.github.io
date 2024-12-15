@@ -1,7 +1,7 @@
 ---
 name: Implementing and Optimizing ML Kernels 
 tools: [CUDA, C++, AVX, Machine Learning]
-image: https://i.imgur.com/yYhFvIc.png
+image: https://i.imgur.com/NzP2zWa.png
 description: A small library where I implement and optimize common machine learning kernels
 ---
 

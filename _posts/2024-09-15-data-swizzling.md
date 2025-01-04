@@ -229,8 +229,13 @@ The result of this new ordering is shown:
 Below is the code which should be basically the same as our 8x8 matrix but the calculations for the linear indices are different. We now have to take into account what tile we are processing.
 
 ```cuda
+// initialize constants for tile and index calculations
+int tidx = threadIdx.x;
+int row = blockIdx.y * 8; // our starting row position in our tile
+int col = blockIdx.x * 8; // our starting col position in our tile
+
 for (int i = 0; i < 8; ++i) { 
-    int linear_index = (i + (blockDim.x * blockIdx.x)) * 16 + (threadIdx + (blockDim.y * blockIdx.y));  // uses block information
+    int linear_index = (i + row) * 16 + (tidx + col);  // uses block information
 
     int swizzle_x = i ^ threadIdx;
 
@@ -238,16 +243,16 @@ for (int i = 0; i < 8; ++i) {
 }
 ```
 
+Then for the global memory write loop, we swap the index calculation for calculating the rows and columns. 
+
 ```cuda
 for (int i = 0; i < 8; ++i) { 
-     int linear_index = (i + (blockDim.y * blockIdx.y)) * 16 + (threadIdx + (blockDim.x * blockIdx.x));
+     int linear_index = (tidx + col) * 16 + (row + i);
 
      int swizzle_x = i ^ threadIdx;
 
      out_matrix[linear_index] = shared_matrix[i][swizzle_x];
 }
 ```
-(x, y)
 
-tile (0, 1) -> (1, 0):
-linear = (0 + (1 * 0)) * 16 + (i + (1 * 1)) -> (0 * 16 + 1)
+Our kernel didn't change much other than some extra calculations and swapping the row/col accessing. A trained-eye may have noticed a very performance hindering outcome from our new kernel.

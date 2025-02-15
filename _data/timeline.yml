@@ -9,23 +9,23 @@
   from: 2019
   to: 2020
   description: |
-    • Navigated complex stakeholder goals to create a real-time cloud-based computer vision pipeline that detected vehicle-type and color in low resolution cameras to aid local law enforcement with missing children cases
-    • Collaboratively assessed effectiveness of detection software with engineers, project managers, law enforcement, and department of transportation
-    • Designed and deployed novel algorithms that detected stopped vehicles, crashes, debris, and fires to notify law enforcement and increase positive incident acquisition
-    • Implemented real-time two-stage segmentation algorithms that decreased false positive detections and increased true positive incident acquisition
+    - Navigated complex stakeholder goals to create a real-time cloud-based computer vision pipeline that detected vehicle-type and color in low resolution cameras to aid local law enforcement with missing children cases
+    - Collaborated closely with engineers, project managers, law enforcement, and Department of Transportation to continually adapt our detection system, ensuring its ongoing relevance and effectiveness
+    - Implemented real-time segmentation algorithms that significantly reduced false positive detections and boosted true positive rates, enhancing the system’s reliability for accurate incident identification
+    - Designed and deployed novel algorithms that detected stopped vehicles, crashes, debris, and fires to notify law enforcement and increase positive incident acquisition
 
 - title: Machine Learning Engineer, MiiM Inc., South Jordan, UT, US
   from: 2020
   to: 2023
   description: |
-    • Project lead for a diverse team of engineers and project managers to create an edge computing platform that transforms 3D spaces into a top-down 2D projection to track meaningful movement patterns of pedestrians
-    • Engineered a high-accuracy people detection system optimized to run within a strict 66 millisecond window, leveraging state-of-the-art object detection algorithms and advanced hardware acceleration techniques
-    • Developed a real-time image processing library for deploying machine learning models on camera-enabled edge computing devices, ensuring efficient GPU kernel performance using standardized throughput metrics
+    - Owned the development of an edge computing object detection pipeline, transforming 3D spaces into top-down 2D projections to track pedestrian movement patterns
+    - Designed a custom people detection model with a runtime of 45 ms, leveraging state-of-the-art object detection techniques and hardware-specific optimizations to meet stringent performance needs
+    - Developed a comprehensive edge computing library for deploying models on camera-enabled edge devices, encompassing deployment functionality, timing, metrics, and image transformations to ensure 66 ms processing and sustain 15 FPS
 
 - title: Machine Learning Engineer, Smart Vision Works Inc., Orem, UT, US
   from: 2023
   to: Present
   description: |
-    • Spearhead the design, implementation, and deployment of modular machine learning infrastructure, optimizing neural network performance on diverse vision domains
-    • Proactively engaged as a client-facing engineer, adapting models and data to align with each client’s unique business goals
-    • Increase efficiency for new client inquires by devising and implementing an unsupervised labeling algorithm that reduces labeling time by 1.75x and provides future-sight for new projects
+    - Lead the end-to-end design, implementation, and deployment of modular machine learning training and evaluation infrastructure. Tailored for rapid model development across diverse vision domains
+    - Engage as a client-facing engineer to adapt models and data for complex, evolving produce requirements, ensuring accurate alignment with each client’s unique natural produce characteristics
+    - Develop an unsupervised labeling using feature embedding clustering, reducing labeling time by 25% and providing assessment of model complexity for new produce requirements

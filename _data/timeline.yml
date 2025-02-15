@@ -9,23 +9,23 @@
   from: 2019
   to: 2020
   description: |
-    - Navigated complex stakeholder goals to create a real-time cloud-based computer vision pipeline that detected vehicle-type and color in low resolution cameras to aid local law enforcement with missing children cases
-    - Collaborated closely with engineers, project managers, law enforcement, and Department of Transportation to continually adapt our detection system, ensuring its ongoing relevance and effectiveness
-    - Implemented real-time segmentation algorithms that significantly reduced false positive detections and boosted true positive rates, enhancing the system’s reliability for accurate incident identification
-    - Designed and deployed novel algorithms that detected stopped vehicles, crashes, debris, and fires to notify law enforcement and increase positive incident acquisition
+    At Banjo Inc., I developed a real-time cloud-based computer vision pipeline that identified vehicle types and colors in low-resolution traffic cameras, directly aiding law enforcement in missing child cases. 
+    I collaborated closely with engineers, project managers, and government agencies to refine detection capabilities, ensuring the system remained effective and adaptive. 
+    To improve accuracy, I implemented advanced segmentation algorithms that significantly reduced false positives while enhancing true positive incident identification. 
+    Additionally, I designed and deployed real-time detection models for stopped vehicles, crashes, debris, and fires, increasing emergency response efficiency.
 
 - title: Machine Learning Engineer, MiiM Inc., South Jordan, UT, US
   from: 2020
   to: 2023
   description: |
-    - Owned the development of an edge computing object detection pipeline, transforming 3D spaces into top-down 2D projections to track pedestrian movement patterns
-    - Designed a custom people detection model with a runtime of 45 ms, leveraging state-of-the-art object detection techniques and hardware-specific optimizations to meet stringent performance needs
-    - Developed a comprehensive edge computing library for deploying models on camera-enabled edge devices, encompassing deployment functionality, timing, metrics, and image transformations to ensure 66 ms processing and sustain 15 FPS
+    At MiiM Inc., I spearheaded the development of an edge computing object detection pipeline that transformed 3D spaces into top-down 2D projections, enabling precise pedestrian movement tracking. 
+    I designed a custom people detection model optimized to run within 45 milliseconds, leveraging cutting-edge object detection techniques and hardware-specific optimizations to meet stringent real-time performance constraints. 
+    To ensure efficient deployment, I developed a comprehensive edge computing library, integrating model timing, performance metrics, and image transformations, achieving consistent 15 FPS with 66 ms processing time on resource-limited devices.
 
 - title: Machine Learning Engineer, Smart Vision Works Inc., Orem, UT, US
   from: 2023
   to: Present
   description: |
-    - Lead the end-to-end design, implementation, and deployment of modular machine learning training and evaluation infrastructure. Tailored for rapid model development across diverse vision domains
-    - Engage as a client-facing engineer to adapt models and data for complex, evolving produce requirements, ensuring accurate alignment with each client’s unique natural produce characteristics
-    - Develop an unsupervised labeling using feature embedding clustering, reducing labeling time by 25% and providing assessment of model complexity for new produce requirements
+    Currently, I lead the design, implementation, and deployment of modular machine learning training and evaluation infrastructure, facilitating rapid model development across diverse vision domains. 
+    My role extends beyond engineering as I engage directly with clients, adapting models to align with unique natural produce characteristics. 
+    To streamline annotation efforts, I developed an unsupervised labeling system utilizing feature embedding clustering, reducing labeling time by 25% while providing early insights into model complexity for new produce requirements.
